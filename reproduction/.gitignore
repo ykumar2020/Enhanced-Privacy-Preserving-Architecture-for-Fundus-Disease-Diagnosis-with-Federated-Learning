@@ -1,0 +1,11 @@
+.venv/
+data/
+runs/
+*.pt
+*.pth
+__pycache__/
+.pytest_cache/
+*.py[cod]
+configs/runtime*.yaml
+configs/dataset_location.json
+

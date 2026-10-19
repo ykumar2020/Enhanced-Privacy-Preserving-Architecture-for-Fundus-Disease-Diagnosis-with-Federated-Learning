@@ -1,0 +1,44 @@
+project:
+  run_id: odir_corrected
+  seed: 2025
+data:
+  annotations: data/odir/ODIR-5K_Training_Annotations(Updated)_V2.xlsx
+  image_dir: data/odir/Training Images
+  output_dir: runs/odir_corrected
+  task: multiclass
+  label_source: official_eye_keywords
+  decision_threshold: 0.5
+  classes: [normal, glaucoma, cataract]
+  strict_eye_labels: true
+  exclude_multilabel: true
+  patient_separated: true
+  split: [0.64, 0.16, 0.20]
+  num_clients: 4
+preprocess:
+  clahe_mode: lab_l
+  clahe_clip_limit: 2.0
+  clahe_grid_size: 8
+  crop_background_threshold: 10
+  image_size: 224
+  horizontal_flip_probability: 0.5
+  vertical_flip_probability: 0.5
+  imagenet_mean: [0.485, 0.456, 0.406]
+  imagenet_std: [0.229, 0.224, 0.225]
+model:
+  architecture: vgg19
+  imagenet_weights: true
+  freeze_features: true
+training:
+  batch_size: 16
+  learning_rate: 0.001
+  optimizer: adam
+  centralized_epochs: 5
+  local_epochs: 1
+  rounds: 10
+  clients_per_round: 2
+  num_workers: 0
+  device: auto
+federated:
+  aggregation: sample_weighted_fedavg
+  selection: seeded_without_replacement
+
